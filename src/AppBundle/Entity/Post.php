@@ -73,6 +73,15 @@ class Post
     private $content;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank(message="post.blank_content")
+     * @Assert\Length(min=10, minMessage="post.too_short_content")
+     */
+    private $content4;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -159,6 +168,19 @@ class Post
     public function setContent($content)
     {
         $this->content = $content;
+    }
+
+    public function getContent4()
+    {
+        return $this->content4;
+    }
+
+    /**
+     * @param string $content4
+     */
+    public function setContent4($content4)
+    {
+        $this->content4 = $content4;
     }
 
     public function getPublishedAt()
