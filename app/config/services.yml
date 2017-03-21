@@ -96,3 +96,6 @@ services:
         public: false
         tags:
             - { name: serializer.normalizer }
+
+    app.security.token_authenticator:
+        class: AppBundle\Security\TokenGuardAuthenticator

@@ -76,6 +76,16 @@ class User implements UserInterface
      */
     private $roles = [];
 
+    /**
+     * @ORM\Column(type="string", unique=true)
+     */
+    private $apiToken;
+
+    public function __construct()
+    {
+        $this->apiToken = hash('sha1', random_bytes(20));
+    }
+
     public function getId()
     {
         return $this->id;
