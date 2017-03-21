@@ -87,3 +87,12 @@ services:
         arguments:
             - '@router'
         public: false
+
+    app.serializer.normalizer.post:
+        class: AppBundle\Serializer\Normalizer\PostNormalizer
+        arguments:
+            - '@serializer.normalizer.object'
+            - '@router'
+        public: false
+        tags:
+            - { name: serializer.normalizer }
