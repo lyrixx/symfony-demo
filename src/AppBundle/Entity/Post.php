@@ -56,7 +56,7 @@ class Post
      *
      * @ORM\Column(type="string")
      * @Assert\NotBlank
-     * @Groups({"post_read", "post_list_read"})
+     * @Groups({"post_read", "post_list_read", "post_write"})
      */
     private $title;
 
@@ -72,7 +72,7 @@ class Post
      *
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="post.blank_summary")
-     * @Groups({"post_read", "post_list_read"})
+     * @Groups({"post_read", "post_list_read", "post_write"})
      */
     private $summary;
 
@@ -82,7 +82,7 @@ class Post
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="post.blank_content")
      * @Assert\Length(min=10, minMessage="post.too_short_content")
-     * @Groups({"post_read", "post_list_read"})
+     * @Groups({"post_read", "post_list_read", "post_write"})
      */
     private $content;
 

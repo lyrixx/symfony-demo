@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Post;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +33,35 @@ class PostController extends Controller
      */
     public function showAction(Post $post)
     {
+        $repr = $this->get('serializer')->serialize($post, 'json', ['groups' => ['post_read']]);
+
+        return JsonResponse::fromJsonString($repr);
+    }
+
+    /**
+     * @Route("/{id}", name="api_blog_edit")
+     * @Method("PUT")
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function editAction(Post $post, Request $request)
+    {
+        $data = $request->getContent();
+
+        $this->get('serializer')->deserialize($data, Post::class, 'json', [
+            'groups' => ['post_write'],
+            'object_to_populate' => $post,
+        ]);
+
+        $violations = $this->get('validator')->validate($post);
+
+        if (count($violations) > 0) {
+            $repr = $this->get('serializer')->serialize($violations, 'json');
+
+            return JsonResponse::fromJsonString($repr);
+        }
+
+        $this->getDoctrine()->getManager()->flush();;
+
         $repr = $this->get('serializer')->serialize($post, 'json', ['groups' => ['post_read']]);
 
         return JsonResponse::fromJsonString($repr);

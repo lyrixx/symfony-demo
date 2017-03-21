@@ -97,5 +97,11 @@ services:
         tags:
             - { name: serializer.normalizer }
 
+    app.serializer.normalizer.constraint_violation_list:
+        class: AppBundle\Serializer\Normalizer\ConstraintViolationListNormalizer
+        public: false
+        tags:
+            - { name: serializer.normalizer }
+
     app.security.token_authenticator:
         class: AppBundle\Security\TokenGuardAuthenticator
