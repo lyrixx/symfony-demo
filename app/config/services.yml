@@ -82,6 +82,11 @@ services:
     # // same code using repository services
     # $posts = $this->get('app.post_repository')->findAll();
 
+    app.tag_repository:
+        class:     Doctrine\ORM\EntityRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [AppBundle\Entity\Tag]
+
     app.serializer.circular_reference_handler:
         class: AppBundle\Serializer\CircularReferenceHandler
         arguments:
@@ -99,6 +104,14 @@ services:
 
     app.serializer.normalizer.constraint_violation_list:
         class: AppBundle\Serializer\Normalizer\ConstraintViolationListNormalizer
+        public: false
+        tags:
+            - { name: serializer.normalizer }
+
+    app.serializer.normalizer.tag:
+        class: AppBundle\Serializer\Normalizer\TagNormalizer
+        arguments:
+            - '@app.tag_repository'
         public: false
         tags:
             - { name: serializer.normalizer }

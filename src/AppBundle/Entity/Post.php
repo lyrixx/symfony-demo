@@ -124,7 +124,7 @@ class Post
      * @ORM\JoinTable(name="symfony_demo_post_tag")
      * @ORM\OrderBy({"name": "ASC"})
      * @Assert\Count(max="4", maxMessage="post.too_many_tags")
-     * @Groups({"post_read"})
+     * @Groups({"post_read", "post_write"})
      */
     private $tags;
 
