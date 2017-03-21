@@ -52,6 +52,7 @@ framework:
     serializer:
         enabled: true
         enable_annotations: true
+        name_converter: serializer.name_converter.camel_case_to_snake_case
         # Wait for https://github.com/symfony/symfony/pull/22011
         # circular_reference_handler: app.serializer.circular_reference_handler
 
