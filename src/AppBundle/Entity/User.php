@@ -13,6 +13,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
@@ -42,6 +43,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Groups({"post_read"})
      */
     private $fullName;
 
@@ -49,6 +51,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(type="string", unique=true)
+     * @Groups({"post_read"})
      */
     private $username;
 

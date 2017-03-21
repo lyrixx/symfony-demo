@@ -11,6 +11,9 @@
 
 namespace AppBundle;
 
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -35,10 +38,25 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  */
-class AppBundle extends Bundle
+class AppBundle extends Bundle implements CompilerPassInterface
 {
     // At first it's common to leave this class empty, but when the application grows,
     // you may need to add some initialization code in the boot() method.
     // Checkout the Symfony\Component\HttpKernel\Bundle\Bundle class to see all
     // the available methods for bundles.
+
+    // Wait for https://github.com/symfony/symfony/pull/22011
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass($this);
+    }
+
+    public function process(ContainerBuilder $container)
+    {
+        $container->findDefinition('serializer.normalizer.object')
+            ->addMethodCall('setCircularReferenceHandler', [
+                new Reference('app.serializer.circular_reference_handler'),
+            ])
+        ;
+    }
 }

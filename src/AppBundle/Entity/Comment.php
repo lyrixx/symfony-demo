@@ -12,6 +12,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -57,6 +58,7 @@ class Comment
      *     max=10000,
      *     maxMessage="comment.too_long"
      * )
+     * @Groups({"post_read"})
      */
     private $content;
 
@@ -65,6 +67,7 @@ class Comment
      *
      * @ORM\Column(type="datetime")
      * @Assert\DateTime
+     * @Groups({"post_read"})
      */
     private $publishedAt;
 

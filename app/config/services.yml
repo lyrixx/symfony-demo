@@ -81,3 +81,9 @@ services:
     #
     # // same code using repository services
     # $posts = $this->get('app.post_repository')->findAll();
+
+    app.serializer.circular_reference_handler:
+        class: AppBundle\Serializer\CircularReferenceHandler
+        arguments:
+            - '@router'
+        public: false

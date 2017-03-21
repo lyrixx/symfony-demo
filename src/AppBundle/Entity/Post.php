@@ -13,6 +13,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -46,6 +47,7 @@ class Post
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"post_read", "post_list_read"})
      */
     private $id;
 
@@ -54,6 +56,7 @@ class Post
      *
      * @ORM\Column(type="string")
      * @Assert\NotBlank
+     * @Groups({"post_read", "post_list_read"})
      */
     private $title;
 
@@ -69,6 +72,7 @@ class Post
      *
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="post.blank_summary")
+     * @Groups({"post_read", "post_list_read"})
      */
     private $summary;
 
@@ -78,6 +82,7 @@ class Post
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="post.blank_content")
      * @Assert\Length(min=10, minMessage="post.too_short_content")
+     * @Groups({"post_read", "post_list_read"})
      */
     private $content;
 
@@ -86,6 +91,7 @@ class Post
      *
      * @ORM\Column(type="datetime")
      * @Assert\DateTime
+     * @Groups({"post_read", "post_list_read"})
      */
     private $publishedAt;
 
@@ -94,6 +100,7 @@ class Post
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"post_read"})
      */
     private $author;
 
@@ -106,6 +113,7 @@ class Post
      *      orphanRemoval=true
      * )
      * @ORM\OrderBy({"publishedAt": "DESC"})
+     * @Groups({"post_read"})
      */
     private $comments;
 
@@ -116,6 +124,7 @@ class Post
      * @ORM\JoinTable(name="symfony_demo_post_tag")
      * @ORM\OrderBy({"name": "ASC"})
      * @Assert\Count(max="4", maxMessage="post.too_many_tags")
+     * @Groups({"post_read"})
      */
     private $tags;
 
