@@ -82,7 +82,10 @@ services:
     # // same code using repository services
     # $posts = $this->get('app.post_repository')->findAll();
 
-    app.workflow.listerner.post:
+    app.workflow.listener.post:
         class: AppBundle\EventListener\PostWorkflowSubscriber
         tags:
             - { name: kernel.event_subscriber }
+
+    app.workflow.marking_store.bit:
+        class: AppBundle\Workflow\BitMarkingStore

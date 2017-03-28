@@ -4,8 +4,9 @@ framework:
             audit_trail: true
             supports: AppBundle\Entity\Post
             marking_store:
-                type: single_state
-                arguments: [status]
+                # type: single_state
+                # arguments: [status]
+                service: app.workflow.marking_store.bit
             type: state_machine
             places: [new, accepted, published]
             transitions:

@@ -42,11 +42,11 @@ class PostRepository extends EntityRepository
                 FROM AppBundle:Post p
                 LEFT JOIN p.tags t
                 WHERE p.publishedAt <= :now
-                    AND p.status = :status
+                    AND BIT_AND(p.status, :status) > 0
                 ORDER BY p.publishedAt DESC
             ')
             ->setParameter('now', new \DateTime())
-            ->setParameter('status', 'published')
+            ->setParameter('status', 4)
         ;
 
         return $this->createPaginator($query, $page);
