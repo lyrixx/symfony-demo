@@ -17,6 +17,22 @@
         {{ include('admin/blog/_delete_form.html.twig', { post: post }, with_context = false) }}
     </div>
 
+    <div class="section actions">
+        <form action="{{ url('admin_post_edit_workflow', { id: post.id }) }}" method="post">
+            <div class="btn-toolbar" role="toolbar">
+                {% for transition in workflow_transitions(post) %}
+                    <button value="{{ transition.name }}"
+                        name="transition" type="submit"
+                        class="btn btn-primary btn-lg"
+                    >
+                        {{ transition.name|title }}
+                    </button>
+                {% endfor %}
+            </div>
+            <input type="hidden" name="token" value="{{ csrf_token('') }}">
+        </form>
+    </div>
+
     {{ parent() }}
 
     {{ show_source_code(_self) }}

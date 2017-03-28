@@ -1,0 +1,23 @@
+framework:
+    workflows:
+        post:
+            supports: AppBundle\Entity\Post
+            marking_store:
+                type: single_state
+                arguments: [status]
+            type: state_machine
+            places: [new, accepted, published]
+            transitions:
+                accept:
+                    from: new
+                    to: accepted
+                reject:
+                    from: accepted
+                    to: new
+                publish:
+                    from: accepted
+                    to: published
+                unpublish:
+                    from: published
+                    to: accepted
+

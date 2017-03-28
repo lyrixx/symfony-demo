@@ -19,6 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Workflow\Exception\LogicException;
 
 /**
  * Controller used to manage blog contents in the backend.
@@ -157,6 +158,34 @@ class BlogController extends Controller
             'post' => $post,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/workflow", requirements={"id": "\d+"}, name="admin_post_edit_workflow")
+     * @Method("POST")
+     */
+    public function editWorkflowAction(Post $post, Request $request)
+    {
+        $this->denyAccessUnlessGranted('edit', $post, 'Posts can only be edited by their authors.');
+
+        if (!$this->isCsrfTokenValid('', $request->request->get('token'))) {
+            throw $this->createAccessDeniedException('noooope!');
+        }
+
+        try {
+            $this->get('state_machine.post')->apply($post, $request->request->get('transition'));
+        // use Symfony\Component\Workflow\Exception\LogicException;
+        } catch (LogicException $e) {
+            $this->addFlash('warning', 'Oups, this transition is not available anymore.');
+
+            return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
+        }
+
+        $this->get('doctrine.orm.default_entity_manager')->flush();
+
+        $this->addFlash('success', 'post.updated_successfully');
+
+        return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
     }
 
     /**
