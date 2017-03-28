@@ -56,7 +56,11 @@ class BlogController extends Controller
     public function indexAction()
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $posts = $entityManager->getRepository(Post::class)->findBy(['author' => $this->getUser()], ['publishedAt' => 'DESC']);
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+            $posts = $entityManager->getRepository(Post::class)->findAll(['publishedAt' => 'DESC']);
+        } else {
+            $posts = $entityManager->getRepository(Post::class)->findBy(['author' => $this->getUser()], ['publishedAt' => 'DESC']);
+        }
 
         return $this->render('admin/blog/index.html.twig', ['posts' => $posts]);
     }
@@ -137,7 +141,7 @@ class BlogController extends Controller
      */
     public function editAction(Post $post, Request $request)
     {
-        $this->denyAccessUnlessGranted('edit', $post, 'Posts can only be edited by their authors.');
+        $this->denyAccessUnlessGranted(['ROLE_SUPER_ADMIN', 'edit'], $post, 'Posts can only be edited by their authors.');
 
         $entityManager = $this->getDoctrine()->getManager();
 

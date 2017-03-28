@@ -17,7 +17,9 @@ framework:
                 publish:
                     from: accepted
                     to: published
+                    guard: has_role('ROLE_ADMIN')
                 unpublish:
                     from: published
                     to: accepted
+                    guard: has_role('ROLE_ADMIN')
 

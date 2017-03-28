@@ -44,14 +44,27 @@ class UserFixtures extends AbstractFixture implements ContainerAwareInterface
         $janeAdmin->setFullName('Jane Doe');
         $janeAdmin->setUsername('jane_admin');
         $janeAdmin->setEmail('jane_admin@symfony.com');
-        $janeAdmin->setRoles(['ROLE_ADMIN']);
+        $janeAdmin->setRoles(['ROLE_SUPER_ADMIN']);
         $encodedPassword = $passwordEncoder->encodePassword($janeAdmin, 'kitten');
         $janeAdmin->setPassword($encodedPassword);
         $manager->persist($janeAdmin);
         // In case if fixture objects have relations to other fixtures, adds a reference
         // to that object by name and later reference it to form a relation.
         // See https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html#sharing-objects-between-fixtures
-        $this->addReference('jane-admin', $janeAdmin);
+        $this->addReference('jane-super-admin', $janeAdmin);
+
+        $aliceAdmin = new User();
+        $aliceAdmin->setFullName('Alice Doe');
+        $aliceAdmin->setUsername('alice_admin');
+        $aliceAdmin->setEmail('alice_admin@symfony.com');
+        $aliceAdmin->setRoles(['ROLE_ADMIN']);
+        $encodedPassword = $passwordEncoder->encodePassword($aliceAdmin, 'kitten');
+        $aliceAdmin->setPassword($encodedPassword);
+        $manager->persist($aliceAdmin);
+        // In case if fixture objects have relations to other fixtures, adds a reference
+        // to that object by name and later reference it to form a relation.
+        // See https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html#sharing-objects-between-fixtures
+        $this->addReference('alice-admin', $janeAdmin);
 
         $johnUser = new User();
         $johnUser->setFullName('John Doe');
