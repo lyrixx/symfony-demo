@@ -84,8 +84,8 @@ class Post
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     * @Assert\DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private $publishedAt;
 
@@ -128,7 +128,6 @@ class Post
 
     public function __construct()
     {
-        $this->publishedAt = new \DateTime();
         $this->comments = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
@@ -195,7 +194,7 @@ class Post
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTime $publishedAt)
+    public function setPublishedAt(\DateTime $publishedAt = null)
     {
         $this->publishedAt = $publishedAt;
     }

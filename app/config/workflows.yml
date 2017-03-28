@@ -1,6 +1,7 @@
 framework:
     workflows:
         post:
+            audit_trail: true
             supports: AppBundle\Entity\Post
             marking_store:
                 type: single_state

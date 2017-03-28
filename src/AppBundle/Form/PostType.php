@@ -56,6 +56,7 @@ class PostType extends AbstractType
             ])
             ->add('publishedAt', DateTimePickerType::class, [
                 'label' => 'label.published_at',
+                'required' => false,
             ])
             ->add('tags', TagsInputType::class, [
                 'label' => 'label.tags',
